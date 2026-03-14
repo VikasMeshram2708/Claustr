@@ -35,7 +35,7 @@ type NavLinkType = {
 const navLinks: NavLinkType[] = [
   { href: "/", label: "Home" },
   { href: "/generate", label: "Generate" },
-  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/", label: "Privacy Policy" },
 ];
 
 /* ---------------- Nav Links ---------------- */

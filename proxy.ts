@@ -13,7 +13,7 @@ export async function proxy(request: NextRequest) {
   const isPrivateRoute = privateRoute.some((route) =>
     pathname.startsWith(route),
   );
-  console.log("ipriv", isPrivateRoute);
+  // console.log("ipriv", isPrivateRoute);
 
   if (isPrivateRoute && !session) {
     return NextResponse.redirect(new URL("/signin", request.url));
