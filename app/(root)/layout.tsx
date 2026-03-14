@@ -1,6 +1,6 @@
-"use client";
-
 import Header from "@/components/header";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 
 export default function RootLayout({
   children,
@@ -9,7 +9,9 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <Header />
+      <Suspense fallback={<Skeleton className="mx-auto h-12 max-w-7xl" />}>
+        <Header />
+      </Suspense>
       {children}
     </>
   );
