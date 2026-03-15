@@ -11,7 +11,7 @@ export default function Hero() {
         <br />
         Videos Instantly Using AI
       </Heading>
-      <div className="flex justify-between">
+      <div className="flex flex-wrap justify-between gap-6">
         <SubHeading>
           Turn product images into scroll-stopping ads for Facebook, Instagram,
           and TikTok
