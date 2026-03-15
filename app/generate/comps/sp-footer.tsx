@@ -48,7 +48,10 @@ export default function SPFooter() {
               </SidebarMenuButton>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuContent
+              align="end"
+              className="w-(--radix-popper-anchor-width)"
+            >
               <DropdownMenuLabel className="text-muted-foreground">
                 Account
               </DropdownMenuLabel>
