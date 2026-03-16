@@ -32,13 +32,13 @@ export default function Hero() {
         <div className="absolute inset-0 bg-black" />
 
         {/* bottom spotlight gradient */}
-        <div className="absolute bottom-[-200px] left-1/2 h-[600px] w-[1200px] -translate-x-1/2 rounded-full bg-white/30 blur-[180px]" />
+        <div className="absolute -bottom-50 left-1/2 h-150 w-300 -translate-x-1/2 rounded-full bg-white/30 blur-[180px]" />
 
         {/* softer secondary glow */}
-        <div className="absolute bottom-[-250px] left-1/2 h-[700px] w-[1400px] -translate-x-1/2 rounded-full bg-white/20 blur-[220px]" />
+        <div className="absolute -bottom-62.5 left-1/2 h-175 w-350 -translate-x-1/2 rounded-full bg-white/20 blur-[220px]" />
 
         {/* fade to dark toward top */}
-        <div className="absolute inset-x-0 top-0 h-[60%] bg-gradient-to-b from-black via-black/70 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-[60%] bg-linear-to-b from-black via-black/70 to-transparent" />
       </div>
 
       {/* ---------------- Content ---------------- */}
