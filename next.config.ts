@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "picsum.photos",
       },
+      {
+        hostname: "ui-avatars.com",
+      },
     ],
   },
   typedRoutes: true,

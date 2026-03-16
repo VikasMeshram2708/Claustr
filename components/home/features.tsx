@@ -1,4 +1,3 @@
-import Image from "next/image";
 import SubHeading from "../sub-heading";
 import { Card, CardContent } from "../ui/card";
 import { LayersSvg } from "@/public/assets/feature-assets/layers";
