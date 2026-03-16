@@ -9,7 +9,9 @@ export default function Home() {
       <Hero />
       <Features />
       <Founders />
-      <CTA />
+      <div className="my-10">
+        <CTA />
+      </div>
     </div>
   );
 }

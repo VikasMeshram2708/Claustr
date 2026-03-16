@@ -15,7 +15,12 @@ import {
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/auth-client";
-import { ChevronsUpDownIcon } from "lucide-react";
+import {
+  ChevronsUpDownIcon,
+  LogOutIcon,
+  SettingsIcon,
+  UsersIcon,
+} from "lucide-react";
 import Image from "next/image";
 
 export default function SPFooter() {
@@ -44,7 +49,7 @@ export default function SPFooter() {
 
                 <span className="text-sm">{user?.name ?? "Anon"}</span>
 
-                <ChevronsUpDownIcon className="size-4 opacity-60" />
+                <ChevronsUpDownIcon className="ml-auto" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
 
@@ -56,9 +61,18 @@ export default function SPFooter() {
                 Account
               </DropdownMenuLabel>
 
-              <DropdownMenuItem>Account</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem>
+                <UsersIcon />
+                Account
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <SettingsIcon />
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <LogOutIcon />
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </SidebarMenuItem>

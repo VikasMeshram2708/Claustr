@@ -8,17 +8,20 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { IconAsset, TablerIcon } from "@tabler/icons-react";
+import { TablerIcon } from "@tabler/icons-react";
 import {
-  FolderOpenIcon,
-  HomeIcon,
+  LayoutDashboardIcon,
   LucideIcon,
-  ToolboxIcon,
+  Settings2Icon,
+  VideoIcon,
+  VideotapeIcon,
+  WalletCardsIcon,
 } from "lucide-react";
 import { Route } from "next";
 import SPHeader from "./sp-header";
 import Link from "next/link";
 import SPFooter from "./sp-footer";
+import SPStats from "./sp-stats";
 
 type SidePanelLinkType = {
   label: string;
@@ -29,23 +32,28 @@ type SidePanelLinkType = {
 const data: Array<SidePanelLinkType> = [
   {
     href: "#",
-    label: "Home",
-    icon: HomeIcon,
+    label: "Dashboard",
+    icon: LayoutDashboardIcon,
   },
   {
     href: "#",
-    label: "Projects",
-    icon: FolderOpenIcon,
+    label: "Create Ad",
+    icon: VideoIcon,
   },
   {
     href: "#",
-    label: "Brand Kits",
-    icon: ToolboxIcon,
+    label: "My Videos",
+    icon: VideotapeIcon,
   },
   {
     href: "#",
-    label: "Assets",
-    icon: IconAsset,
+    label: "Billing",
+    icon: WalletCardsIcon,
+  },
+  {
+    href: "#",
+    label: "Settings",
+    icon: Settings2Icon,
   },
 ];
 export default function SidePanel() {
@@ -55,6 +63,8 @@ export default function SidePanel() {
       <SPHeader />
       {/* Content */}
       <SidebarContent>
+        {/* stats */}
+        {/* Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
