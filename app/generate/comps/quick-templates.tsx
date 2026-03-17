@@ -24,7 +24,7 @@ const templates: Template[] = [
 export default function QuickTemplates() {
   return (
     <section className="p-5">
-      <Card className="w-full">
+      <Card className="border-border w-full border">
         <CardHeader>
           <CardTitle className="text-xl md:text-2xl">Quick Templates</CardTitle>
         </CardHeader>

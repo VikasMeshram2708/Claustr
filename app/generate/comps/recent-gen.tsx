@@ -95,7 +95,7 @@ function goalVariant(goal: CampaignGoal) {
 export default function RecentGen() {
   return (
     <section className="w-full p-5">
-      <Card>
+      <Card className="border-border border">
         <CardHeader>
           <CardTitle>Recent Projects</CardTitle>
         </CardHeader>
