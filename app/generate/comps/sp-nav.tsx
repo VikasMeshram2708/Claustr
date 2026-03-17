@@ -34,7 +34,7 @@ const data: Array<SidePanelLinkType> = [
     icon: LayoutDashboardIcon,
   },
   {
-    href: "#",
+    href: "/generate/create-ad",
     label: "Create Ad",
     icon: VideoIcon,
   },
@@ -70,7 +70,7 @@ export default function SPNav() {
           {data?.map((d) => (
             <SidebarMenuItem key={d.label}>
               <SidebarMenuButton asChild isActive={isActive(d.href)}>
-                <Link href={d.href}>
+                <Link href={d.href} prefetch>
                   <d.icon />
                   {d.label}
                 </Link>

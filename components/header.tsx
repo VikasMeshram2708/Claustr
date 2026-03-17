@@ -10,9 +10,8 @@ import {
   Loader2Icon,
   ChevronsUpDownIcon,
   MenuIcon,
+  CircleUserIcon,
 } from "lucide-react";
-
-import { IconLogin } from "@tabler/icons-react";
 
 import { authClient } from "@/lib/auth-client";
 
@@ -35,7 +34,7 @@ type NavLinkType = {
 const navLinks: NavLinkType[] = [
   { href: "/", label: "Home" },
   { href: "/generate", label: "Generate" },
-  { href: "#", label: "Privacy Policy" },
+  { href: "/pricing", label: "Pricing" },
 ];
 
 /* ---------------- Nav Links ---------------- */
@@ -165,7 +164,7 @@ export default function Header() {
           ) : (
             <Button asChild>
               <Link href="/signin">
-                <IconLogin />
+                <CircleUserIcon />
                 Sign in
               </Link>
             </Button>

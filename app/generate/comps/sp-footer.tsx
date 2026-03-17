@@ -22,8 +22,13 @@ import {
   UsersIcon,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function SPFooter() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const { data, isPending } = authClient.useSession();
 
   const user = data?.user;
@@ -32,6 +37,22 @@ export default function SPFooter() {
     return <Skeleton className="h-10 w-full rounded-2xl" />;
   }
 
+  async function handleLogout() {
+    setIsLoading(false);
+    try {
+      setIsLoading(true);
+
+      const result = await authClient.signOut();
+      if (result) {
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong. Internal server error");
+    } finally {
+      setIsLoading(false);
+    }
+  }
   return (
     <SidebarFooter>
       <SidebarMenu>
@@ -69,9 +90,19 @@ export default function SPFooter() {
                 <SettingsIcon />
                 Settings
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <LogOutIcon />
-                Logout
+              <DropdownMenuItem
+                disabled={isLoading}
+                role="button"
+                onClick={handleLogout}
+              >
+                {isLoading ? (
+                  "Logging out..."
+                ) : (
+                  <>
+                    <LogOutIcon />
+                    Logout
+                  </>
+                )}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
