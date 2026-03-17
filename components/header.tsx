@@ -11,6 +11,9 @@ import {
   ChevronsUpDownIcon,
   MenuIcon,
   CircleUserIcon,
+  UsersIcon,
+  SettingsIcon,
+  LogOutIcon,
 } from "lucide-react";
 
 import { authClient } from "@/lib/auth-client";
@@ -25,6 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import toast from "react-hot-toast";
 
 type NavLinkType = {
   label: string;
@@ -39,6 +43,14 @@ const navLinks: NavLinkType[] = [
 
 /* ---------------- Nav Links ---------------- */
 
+async function handleLogout() {
+  try {
+    await authClient.signOut();
+  } catch (error) {
+    console.error(error);
+    toast.error("Something went wrong. Internal server error");
+  }
+}
 function NavLinks() {
   const pathname = usePathname();
 
@@ -123,9 +135,18 @@ function UserHandle({ user }: UserProps) {
           Account
         </DropdownMenuLabel>
 
-        <DropdownMenuItem>Account</DropdownMenuItem>
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        <DropdownMenuItem>
+          <UsersIcon />
+          Account
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <SettingsIcon />
+          Settings
+        </DropdownMenuItem>
+        <DropdownMenuItem role="button" onClick={handleLogout}>
+          <LogOutIcon />
+          Logout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -138,7 +159,7 @@ export default function Header() {
   const user = data?.user;
 
   return (
-    <header className="">
+    <header className="bg-background/75">
       <div className="mx-auto flex max-w-7xl items-center justify-between p-3">
         {/* Left Section */}
         <div className="flex items-center gap-3">

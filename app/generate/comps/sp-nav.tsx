@@ -44,7 +44,7 @@ const data: Array<SidePanelLinkType> = [
     icon: VideotapeIcon,
   },
   {
-    href: "#",
+    href: "/generate/billing",
     label: "Billing",
     icon: WalletCardsIcon,
   },

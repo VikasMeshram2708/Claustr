@@ -7,12 +7,12 @@ import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { Loader2Icon } from "lucide-react";
+import Image from "next/image";
 
 export default function SignInPage() {
   const [loading, setLoading] = useState(false);
 
   async function handleSignIn() {
-    setLoading(false);
     try {
       setLoading(true);
 
@@ -21,38 +21,68 @@ export default function SignInPage() {
         callbackURL: "/",
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong. Internal server error.");
-    } finally {
       setLoading(false);
     }
   }
+
   return (
-    <div className="flex min-h-screen flex-col justify-center">
-      <Card className="mx-auto w-full max-w-sm">
-        <CardHeader>
-          <CardTitle className="text-center text-xl font-bold md:text-2xl">
-            Sign In Page
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center">
-          <Button
-            disabled={loading}
-            onClick={handleSignIn}
-            size={"lg"}
-            type="button"
-          >
-            {loading ? (
-              <Loader2Icon className="animate-spin" />
-            ) : (
-              <>
-                <IconBrandGoogle />
-                Sign in with Google
-              </>
-            )}
-          </Button>
-        </CardContent>
-      </Card>
+    <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
+      {/* LEFT SECTION (IMAGE) */}
+      <div className="relative hidden md:block">
+        <Image
+          src="/assets/signin.jpeg" // ✅ must be inside /public/assets
+          alt="Cluastr visual"
+          fill
+          priority
+          className="object-cover"
+        />
+
+        {/* Brand */}
+        <div className="absolute top-6 left-6 text-3xl font-bold text-white">
+          Cluastr
+        </div>
+
+        {/* Optional overlay for readability */}
+        <div className="absolute inset-0 bg-black/20" />
+      </div>
+
+      {/* RIGHT SECTION (AUTH CARD) */}
+      <div className="flex items-center justify-center px-6">
+        <Card className="w-full max-w-sm border shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-center text-xl font-semibold md:text-2xl">
+              Continue to Cluastr
+            </CardTitle>
+            <p className="text-muted-foreground text-center text-sm">
+              Sign in to continue your experience
+            </p>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            <Button
+              disabled={loading}
+              onClick={handleSignIn}
+              size="lg"
+              className="w-full cursor-pointer"
+            >
+              {loading ? (
+                <Loader2Icon className="animate-spin" />
+              ) : (
+                <>
+                  <IconBrandGoogle className="mr-2" />
+                  Sign in with Google
+                </>
+              )}
+            </Button>
+
+            <p className="text-muted-foreground text-center text-xs">
+              By continuing, you agree to our Terms & Privacy Policy.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,8 @@
 "use client";
 
+import { AdGenActionResponse, createAdGen } from "@/app/actions/ad-create";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,31 +14,93 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { CircleCheckBigIcon, Loader2Icon, SendIcon } from "lucide-react";
+import { useActionState } from "react";
+import { ErrorIcon } from "react-hot-toast";
 
+const initialState: AdGenActionResponse = {
+  message: "",
+  success: false,
+  errors: {},
+};
+
+// TODO: BUG: default value not working when form error exists.
 export default function AdInput() {
+  const [state, action, isPending] = useActionState(createAdGen, initialState);
+
   return (
     <section className="px-4 py-8">
+      {state?.message && (
+        <Alert
+          variant={state?.success ? "default" : "destructive"}
+          className="flex items-start gap-4 rounded-xl border p-4 shadow-sm"
+        >
+          {/* Icon */}
+          <div
+            className={`mt-0.5 flex size-9 items-center justify-center rounded-lg ${
+              state?.success
+                ? "bg-green-500/10 text-green-600"
+                : "bg-red-500/10 text-red-600"
+            }`}
+          >
+            {state?.success ? (
+              <CircleCheckBigIcon className="size-5" />
+            ) : (
+              <ErrorIcon className="size-5" />
+            )}
+          </div>
+
+          {/* Content */}
+          <div className="flex flex-col gap-1">
+            <AlertTitle className="text-sm leading-none font-semibold">
+              {state?.success ? "Success" : "Fix the following errors"}
+            </AlertTitle>
+
+            <AlertDescription className="text-muted-foreground text-sm leading-relaxed">
+              {state?.message}
+            </AlertDescription>
+          </div>
+        </Alert>
+      )}
       <Card className="border-border/60 bg-background rounded-2xl border shadow-sm">
         <CardContent className="p-6 md:p-8">
-          <form className="space-y-8">
+          <form action={action} className="space-y-8">
             {/* Product Info */}
             <div className="space-y-4">
               <p className="text-muted-foreground text-sm font-medium">
                 Product Information
               </p>
 
-              <Input
-                type="text"
-                name="name"
-                placeholder="Product name"
-                className="h-11 w-full"
-              />
+              <div>
+                <Input
+                  defaultValue={state?.inputs?.name}
+                  type="text"
+                  name="name"
+                  placeholder="Product name"
+                  className="h-11 w-full"
+                  maxLength={200}
+                />
+                {state?.errors && (
+                  <p className="text-sm/6 font-semibold text-red-500">
+                    {state?.errors?.name?.[0]}
+                  </p>
+                )}
+              </div>
 
-              <Textarea
-                name="description"
-                placeholder="Product description"
-                className="min-h-27.5 w-full"
-              />
+              <div>
+                <Textarea
+                  defaultValue={state?.inputs?.description}
+                  name="description"
+                  placeholder="Product description"
+                  className="min-h-27.5 w-full"
+                  maxLength={500}
+                />
+                {state?.errors && (
+                  <p className="text-sm/6 font-semibold text-red-500">
+                    {state?.errors?.description?.[0]}
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* Audience Targeting */}
@@ -49,7 +114,10 @@ export default function AdInput() {
                   <p className="text-muted-foreground text-xs">
                     Target audience
                   </p>
-                  <Select>
+                  <Select
+                    name="audience"
+                    defaultValue={state?.inputs?.audience}
+                  >
                     <SelectTrigger className="h-11 w-full">
                       <SelectValue placeholder="Select audience" />
                     </SelectTrigger>
@@ -66,11 +134,16 @@ export default function AdInput() {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
+                  {state?.errors && (
+                    <p className="text-sm/6 font-semibold text-red-500">
+                      {state?.errors?.audience?.[0]}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
                   <p className="text-muted-foreground text-xs">Age group</p>
-                  <Select>
+                  <Select name="age" defaultValue={state?.inputs?.age}>
                     <SelectTrigger className="h-11 w-full">
                       <SelectValue placeholder="Select age group" />
                     </SelectTrigger>
@@ -85,6 +158,11 @@ export default function AdInput() {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
+                  {state?.errors && (
+                    <p className="text-sm/6 font-semibold text-red-500">
+                      {state?.errors?.age?.[0]}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -98,7 +176,7 @@ export default function AdInput() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <p className="text-muted-foreground text-xs">Primary goal</p>
-                  <Select>
+                  <Select name="goal" defaultValue={state?.inputs?.goal}>
                     <SelectTrigger className="h-11 w-full">
                       <SelectValue placeholder="Select goal" />
                     </SelectTrigger>
@@ -115,11 +193,16 @@ export default function AdInput() {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
+                  {state?.errors && (
+                    <p className="text-sm/6 font-semibold text-red-500">
+                      {state?.errors?.goal?.[0]}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
                   <p className="text-muted-foreground text-xs">Ad style</p>
-                  <Select>
+                  <Select name="style" defaultValue={state?.inputs?.style}>
                     <SelectTrigger className="h-11 w-full">
                       <SelectValue placeholder="Select style" />
                     </SelectTrigger>
@@ -136,6 +219,11 @@ export default function AdInput() {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
+                  {state?.errors && (
+                    <p className="text-sm/6 font-semibold text-red-500">
+                      {state?.errors?.style?.[0]}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -149,7 +237,7 @@ export default function AdInput() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <p className="text-muted-foreground text-xs">Ad length</p>
-                  <Select>
+                  <Select name="length" defaultValue={state?.inputs?.length}>
                     <SelectTrigger className="h-11 w-full">
                       <SelectValue placeholder="Select length" />
                     </SelectTrigger>
@@ -163,11 +251,16 @@ export default function AdInput() {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
+                  {state?.errors && (
+                    <p className="text-sm/6 font-semibold text-red-500">
+                      {state?.errors?.length?.[0]}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
                   <p className="text-muted-foreground text-xs">Content type</p>
-                  <Select>
+                  <Select name="type" defaultValue={state?.inputs?.type}>
                     <SelectTrigger className="h-11 w-full">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
@@ -180,8 +273,25 @@ export default function AdInput() {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
+                  {state?.errors && (
+                    <p className="text-sm/6 font-semibold text-red-500">
+                      {state?.errors?.type?.[0]}
+                    </p>
+                  )}
                 </div>
               </div>
+            </div>
+            <div className="flex items-center justify-end">
+              <Button type="submit" disabled={isPending}>
+                {isPending ? (
+                  <Loader2Icon className="animate-spin" />
+                ) : (
+                  <>
+                    <SendIcon />
+                    Submit
+                  </>
+                )}
+              </Button>
             </div>
           </form>
         </CardContent>
