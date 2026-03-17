@@ -1,8 +1,10 @@
 "use server";
 
 import { auth } from "@/lib/auth";
+import { fal } from "@fal-ai/client";
 import { headers } from "next/headers";
 import * as z from "zod";
+import { buildPrompt } from "./build-prompt";
 
 const genSchema = z.object({
   name: z.string().min(1, "Name is required").max(200, "Name is too long"),
@@ -24,7 +26,7 @@ const genSchema = z.object({
   type: z.string().min(1, "Type is required").max(200, "Type is too long"),
 });
 
-type genSchema = z.infer<typeof genSchema>;
+export type genSchema = z.infer<typeof genSchema>;
 
 export type AdGenActionResponse = {
   success: boolean;
@@ -70,11 +72,45 @@ export async function createAdGen(
         success: false,
         message: "Invalid payload",
         errors: z.flattenError(sanitized.error).fieldErrors,
-        inputs: sanitized.data,
+        inputs: raw,
       };
     }
 
     // ai operation
+    // generate a structured prompt
+    const data = sanitized.data;
+    const prompt = buildPrompt(data);
+    console.log("prompt", prompt);
+
+    const promptResult = await fal.subscribe(
+      "bria/fibo-lite/generate/structured_prompt",
+      {
+        input: { prompt },
+        logs: true,
+        onQueueUpdate: (update) => {
+          if (update.status === "IN_PROGRESS") {
+            update.logs.map((log) => log.message).forEach(console.log);
+          }
+        },
+      },
+    );
+    // console.log("prompt-prompt", promptResult.data);
+    const finalPrompt = promptResult.data;
+    console.log("fp", finalPrompt);
+
+    // image generation model
+    const imgResult = await fal.subscribe("fal-ai/flux/schnell", {
+      input: {
+        prompt: JSON.stringify({ finalPrompt }),
+      },
+      logs: true,
+      onQueueUpdate: (update) => {
+        if (update.status === "IN_PROGRESS") {
+          update.logs.map((log) => log.message).forEach(console.log);
+        }
+      },
+    });
+    console.log("image-result", imgResult.data.images);
 
     // respond
     return {

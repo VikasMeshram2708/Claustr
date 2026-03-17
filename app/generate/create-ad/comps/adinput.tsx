@@ -24,7 +24,6 @@ const initialState: AdGenActionResponse = {
   errors: {},
 };
 
-// TODO: BUG: default value not working when form error exists.
 export default function AdInput() {
   const [state, action, isPending] = useActionState(createAdGen, initialState);
 
